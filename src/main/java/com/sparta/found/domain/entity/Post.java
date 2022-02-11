@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -35,6 +37,12 @@ public class Post extends TimeEntity {
 
     @Column(name = "post_problem",nullable= false)
     private Boolean problem;
+
+    @OneToMany(mappedBy = "post",orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post",orphanRemoval = true)
+    private List<Tag> tagList = new ArrayList<>();
 }
 
 
