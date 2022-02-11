@@ -22,6 +22,7 @@ public class ErrorRes<T> {
 
 
     private T errors;
+    private String errorCode;
     @Nullable
     private String message;
 
