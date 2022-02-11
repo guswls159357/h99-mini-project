@@ -40,4 +40,6 @@ public class User extends TimeEntity{
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<CommentLike> commentLikeList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
 }

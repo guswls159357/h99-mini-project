@@ -19,7 +19,11 @@ public class Comment extends TimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="comment_contents", nullable = false, columnDefinition = "varchar(2000)")
+
+    @Column (name="comment_contents", nullable = false, columnDefinition = "varchar(2000)")
     private String  contents;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name="user_id")
+    private User user;
 }
