@@ -1,9 +1,6 @@
 package com.sparta.found.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -43,4 +40,9 @@ public class User extends TimeEntity{
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
+    @Builder
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

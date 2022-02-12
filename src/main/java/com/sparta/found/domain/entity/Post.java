@@ -1,9 +1,6 @@
 package com.sparta.found.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ public class Post extends TimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @Column(name="post_id")
     private Integer id;
 
     @Column(name = "post_title", nullable = false, columnDefinition = "varchar(50)")
@@ -43,6 +40,15 @@ public class Post extends TimeEntity {
 
     @OneToMany(mappedBy = "post",orphanRemoval = true)
     private List<Tag> tagList = new ArrayList<>();
+
+    @Builder
+    public Post(String title, String contents, String language, Boolean problem) {
+        this.title = title;
+        this.contents = contents;
+        this.language = language;
+        this.problem = problem;
+    }
+
 }
 
 

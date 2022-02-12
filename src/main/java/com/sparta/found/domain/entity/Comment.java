@@ -1,9 +1,6 @@
 package com.sparta.found.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,4 +31,21 @@ public class Comment extends TimeEntity{
 
     @OneToMany(mappedBy = "comment", orphanRemoval = true)
     private List<CommentLike> commentLikeList = new ArrayList<>();
+
+    private void setUser(User user){
+        this.user = user;
+        user.getCommentList().add(this);
+    }
+
+    private void setPost(Post post){
+        this.post = post;
+        post.getCommentList().add(this);
+    }
+
+    @Builder
+    public Comment(String contents, User user, Post post) {
+        this.contents = contents;
+        setUser(user);
+        setPost(post);
+    }
 }

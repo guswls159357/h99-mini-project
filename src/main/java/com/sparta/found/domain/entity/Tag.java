@@ -1,9 +1,6 @@
 package com.sparta.found.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -30,4 +27,14 @@ public class Tag extends TimeEntity{
     @JoinColumn(name = "post_id")
     private Post post;
 
+    private void setPost(Post post){
+        this.post = post;
+        post.getTagList().add(this);
+    }
+
+    @Builder
+    public Tag(String contents, Post post) {
+        this.contents = contents;
+        setPost(post);
+    }
 }

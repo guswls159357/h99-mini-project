@@ -1,9 +1,6 @@
 package com.sparta.found.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -30,4 +27,20 @@ public class CommentLike extends TimeEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "comment_id")
     private Comment comment;
+
+    private void setComment(Comment comment){
+        this.comment = comment;
+        comment.getCommentLikeList().add(this);
+    }
+
+    private void setUser(User user){
+        this.user = user;
+        user.getCommentLikeList().add(this);
+    }
+
+    @Builder
+    public CommentLike(User user, Comment comment) {
+        setUser(user);
+        setComment(comment);
+    }
 }
