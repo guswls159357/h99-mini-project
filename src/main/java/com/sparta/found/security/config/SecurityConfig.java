@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -27,6 +28,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -44,14 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/user/logout").hasRole("USER")
-                .antMatchers(HttpMethod.POST,"/posts").hasRole("USER")
-                .antMatchers(HttpMethod.PUT,"/posts/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET,"/posts/problem/**").hasRole("USER")
-                .antMatchers(HttpMethod.DELETE,"/posts/**").hasRole("USER")
-                .antMatchers("/comment/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET,"/posts/comment/**").hasRole("USER")
-                .antMatchers("/**").permitAll()
+                .mvcMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                .anyRequest().permitAll()
 
                 .and()
                 .cors()
@@ -118,11 +114,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(false);
-        configuration.setMaxAge(3600L);
+        configuration.addExposedHeader("*");
+        configuration.setAllowCredentials(true);
+        configuration.validateAllowCredentials();
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
         return source;

@@ -2,8 +2,6 @@ package com.sparta.found.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.found.domain.entity.User;
-import com.sparta.found.error.ErrorCode;
-import com.sparta.found.error.ErrorRes;
 import com.sparta.found.web.dto.ResDto;
 import com.sparta.found.web.dto.UserInfo;
 import com.sparta.found.web.dto.UserInfoDto;
@@ -49,5 +47,6 @@ public class FormAuthenticationSuccessHandler implements AuthenticationSuccessHa
 
         PrintWriter writer = response.getWriter();
         writer.print(errorJson);
+
     }
 }

@@ -5,6 +5,7 @@ import com.sparta.found.domain.service.PostService;
 import com.sparta.found.web.dto.ResDto;
 import com.sparta.found.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/posts")
+    @Secured(value = "ROLE_USER")
     public ResDto createPost(@RequestBody PostCreateRequestDto dto,
                              @AuthenticationPrincipal User user){
 
