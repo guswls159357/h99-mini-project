@@ -1,8 +1,10 @@
 package com.sparta.found.domain.entity;
 
+import com.sparta.found.web.dto.UserInfo;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
                 @Index(name = "idx_user_created_at", columnList = "created_at"),
                 @Index(name = "idx_user_updated_at", columnList = "updated_at")
         })
-public class User extends TimeEntity{
+public class User extends TimeEntity implements Serializable {
 
 
     @Id
@@ -31,7 +33,7 @@ public class User extends TimeEntity{
 
     @Column(name = "user_password",
             nullable = false,
-            columnDefinition = "varchar(50)")
+            columnDefinition = "varchar(200)")
     private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
@@ -40,9 +42,22 @@ public class User extends TimeEntity{
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,orphanRemoval = true)
+    private List<Post> postList = new ArrayList<>();
+
+    @Column(name="user_role")
+    private String role = "ROLE_USER";
+
     @Builder
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public UserInfo toUserInfo(){
+        return UserInfo.builder()
+                .userId(this.id)
+                .username(this.username)
+                .build();
     }
 }

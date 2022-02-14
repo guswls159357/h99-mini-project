@@ -3,6 +3,8 @@ package com.sparta.found.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,21 +22,14 @@ public class Tag extends TimeEntity{
     @Column(name = "tag_id")
     private Integer id;
 
-    @Column(name = "tag_contents", nullable = false, columnDefinition = "varchar(10)")
+    @Column(name = "tag_contents", nullable = false, columnDefinition = "varchar(20)")
     private String contents;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "post_id")
-    private Post post;
-
-    private void setPost(Post post){
-        this.post = post;
-        post.getTagList().add(this);
-    }
+    @OneToMany(mappedBy = "tag")
+    private List<PostTag> postTagList = new ArrayList<>();
 
     @Builder
-    public Tag(String contents, Post post) {
+    public Tag(String contents) {
         this.contents = contents;
-        setPost(post);
     }
 }

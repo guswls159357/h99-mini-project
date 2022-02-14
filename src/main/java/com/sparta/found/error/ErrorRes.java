@@ -23,34 +23,38 @@ public class ErrorRes<T> {
 
     private T errors;
     private String errorCode;
-    @Nullable
-    private String message;
 
-    //객체를 생성할 때 이름을 부여하여 특정한 목적에서 구별하여 생성할 수 있도록 하자
+
+    // 객체를 생성할 때 이름을 부여하여 특정한 목적에서 구별하여 생성할 수 있도록 하자
     // todo: 이름을 구분하여 사용하자
-    public static ErrorRes of(String field, String rejectedValue, String reason) {
+    public static ErrorRes ofField(String field, String reason, ErrorCode errorCode) {
         return ErrorRes.builder()
-                .errors(CustomFieldError.of(field,rejectedValue, reason))
+                .errors(CustomFieldError.of(field, reason))
+                .errorCode(errorCode.getCustomErrorCode())
                 .build();
     }
 
-    public static ErrorRes of(BindingResult bindingResult) {
+    public static ErrorRes ofField(BindingResult bindingResult, ErrorCode errorCode) {
         return ErrorRes.builder()
                 .errors(CustomFieldError.of(bindingResult))
+                .errorCode(errorCode.getCustomErrorCode())
                 .build();
     }
 
 
-    public static ErrorRes of(BindingResult bindingResult,String message) {
-        return ErrorRes.builder()
-                .message(message)
-                .errors(CustomFieldError.of(bindingResult))
-                .build();
-    }
 
-    public static ErrorRes of(Set<ConstraintViolation<?>> set) {
+
+    public static ErrorRes ofField(Set<ConstraintViolation<?>> set) {
         return ErrorRes.builder()
                 .errors(CustomFieldError.of(set))
+                .build();
+    }
+
+    public static ErrorRes of(String message, ErrorCode errorCode){
+
+        return ErrorRes.builder()
+                .errors(CustomError.of(message))
+                .errorCode(errorCode.getCustomErrorCode())
                 .build();
     }
 
@@ -59,16 +63,14 @@ public class ErrorRes<T> {
     @Builder(access = AccessLevel.PROTECTED)
     public static class CustomFieldError {
         private String field;
-        private String reason;
-        private String rejectedValue;
+        private String message;
 
-        public static List<CustomFieldError> of(String field, String rejectedValue, String reason) {
+        public static List<CustomFieldError> of(String field, String reason) {
 
             List<CustomFieldError> fieldErrors = new ArrayList<>();
             fieldErrors.add(CustomFieldError.builder()
                     .field(field)
-                    .rejectedValue(rejectedValue)
-                    .reason(reason)
+                    .message(reason)
                     .build());
 
             return fieldErrors;
@@ -84,8 +86,7 @@ public class ErrorRes<T> {
                 customFieldErrors.add(
                         CustomFieldError.builder()
                                 .field(error.getField())
-                                .rejectedValue(String.valueOf(error.getRejectedValue()))
-                                .reason(error.getDefaultMessage())
+                                .message(error.getDefaultMessage())
                                 .build()
                 );
             }
@@ -103,18 +104,32 @@ public class ErrorRes<T> {
                 List<Path.Node> list = stream.collect(Collectors.toList());
                 String field = list.get(list.size() - 1).getName();
                 String message = error.getMessage();
-                String rejectedValue = error.getInvalidValue().toString();
 
                 customFieldErrors.add(
                         CustomFieldError.builder()
                                 .field(field)
-                                .rejectedValue(rejectedValue)
-                                .reason(message)
+                                .message(message)
                                 .build()
                 );
             });
 
             return customFieldErrors;
+        }
+    }
+
+    @Builder(access = AccessLevel.PROTECTED)
+    @Getter
+    public static class CustomError {
+        private String message;
+
+        public static List<CustomError> of(String message) {
+
+            List<CustomError> customErrorList = new ArrayList<>();
+            customErrorList.add(CustomError.builder()
+                    .message(message)
+                    .build());
+
+            return customErrorList;
         }
     }
 
