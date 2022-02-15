@@ -24,7 +24,7 @@ public class PostTag extends TimeEntity{
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "tag_id")
     private Tag tag;
 
     @Builder

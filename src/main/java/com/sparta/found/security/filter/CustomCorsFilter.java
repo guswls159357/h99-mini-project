@@ -29,7 +29,7 @@ public class CustomCorsFilter implements Filter {
         httpServletResponse.setHeader("Access-Control-Max-Age","3600");
         httpServletResponse.setHeader("Access-Control-Allow-Headers","*");
         httpServletResponse.setHeader("Access-Control-Allow-Credentials","true");
-
+        httpServletResponse.setHeader("Access-Control-Expose-Headers","*");
 
         if("OPTIONS".equalsIgnoreCase(httpServletRequest.getMethod())){
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);

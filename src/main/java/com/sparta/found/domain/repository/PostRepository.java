@@ -10,8 +10,9 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post,Integer> {
 
-    @Query("select p from Post p join fetch p.postTagList")
-    Optional<Post> findByIdFetchPostTag();
+    @Query("select p from Post p join fetch p.user join fetch p.postTagList t join fetch t.tag where p.id = :postId")
+    Optional<Post> findByIdFetchAll(@Param("postId") Integer postId);
 
-
+    @Query("select distinct p from Post p join fetch p.user")
+    List<Post> findAllFetchUser();
 }

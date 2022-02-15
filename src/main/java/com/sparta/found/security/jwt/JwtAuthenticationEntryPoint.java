@@ -1,4 +1,4 @@
-package com.sparta.found.security.handler;
+package com.sparta.found.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.found.error.ErrorRes;
@@ -19,20 +19,19 @@ import java.io.PrintWriter;
 
 import static com.sparta.found.error.ErrorCode.AUTHENTICATION_ERROR;
 
-@Component
 @RequiredArgsConstructor
-public class FormLoginEntryPoint implements AuthenticationEntryPoint {
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper om;
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String errorMsg;
 
-        if (authException instanceof BadCredentialsException ||
-                authException instanceof InternalAuthenticationServiceException) {
+        if (exception instanceof BadCredentialsException ||
+                exception instanceof InternalAuthenticationServiceException) {
             errorMsg = "아이디나 비밀번호가 맞지 않습니다. 다시 확인해 주세요";
-        } else if (authException instanceof CredentialsExpiredException) {
+        } else if (exception instanceof CredentialsExpiredException) {
             errorMsg = "비밀번호 유효기간이 지났습니다. 비밀번호를 재설정해주세요";
         } else {
             errorMsg = "로그인이 필요합니다";
@@ -40,6 +39,7 @@ public class FormLoginEntryPoint implements AuthenticationEntryPoint {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
+
         response.setStatus(AUTHENTICATION_ERROR.getHttpStatus());
         ErrorRes exceptionRes = ErrorRes.of(errorMsg, AUTHENTICATION_ERROR);
         ResDto<Object> resDto = ResDto.builder()

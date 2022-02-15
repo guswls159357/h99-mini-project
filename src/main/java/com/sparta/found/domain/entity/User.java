@@ -48,11 +48,13 @@ public class User extends TimeEntity implements Serializable {
     @Column(name="user_role")
     private String role = "ROLE_USER";
 
+
     @Builder
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
+
 
     public UserInfo toUserInfo(){
         return UserInfo.builder()

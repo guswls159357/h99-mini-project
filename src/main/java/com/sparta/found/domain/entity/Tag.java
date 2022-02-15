@@ -22,7 +22,7 @@ public class Tag extends TimeEntity{
     @Column(name = "tag_id")
     private Integer id;
 
-    @Column(name = "tag_contents",unique = true, nullable = false, columnDefinition = "varchar(20)")
+    @Column(name = "tag_contents",unique = true, nullable = false, columnDefinition = "varchar(100)")
     private String contents;
 
     @OneToMany(mappedBy = "tag")

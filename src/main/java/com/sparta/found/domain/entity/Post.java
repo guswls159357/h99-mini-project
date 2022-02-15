@@ -27,13 +27,13 @@ public class Post extends TimeEntity {
     @Column(name = "post_id")
     private Integer id;
 
-    @Column(name = "post_title", nullable = false, columnDefinition = "varchar(50)")
+    @Column(name = "post_title", nullable = false, columnDefinition = "varchar(200)")
     private String title;
 
-    @Column(name = "post_contents", nullable = false, columnDefinition = "varchar(3000)")
+    @Column(name = "post_contents", nullable = false, columnDefinition = "varchar(5000)")
     private String contents;
 
-    @Column(name = "post_language", nullable = false, columnDefinition = "varchar(15)")
+    @Column(name = "post_language", nullable = false, columnDefinition = "varchar(30)")
     private String language;
 
     @Column(name = "post_problem", nullable = false)

@@ -17,15 +17,14 @@ public class PostController {
 
     @PostMapping("/posts")
     @Secured(value = "ROLE_USER")
-    public ResDto createPost(@RequestBody PostCreateRequestDto dto,
-                             @AuthenticationPrincipal User user){
+    public ResDto createPost(@RequestBody PostCreateRequestDto dto){
 
 
-        postService.create(user,dto);
+        Integer postId = postService.create(dto);
 
         return ResDto.builder()
                 .result(true)
-                .data(null)
+                .data(PostIdDto.builder().postId(postId).build())
                 .build();
     }
 
@@ -41,7 +40,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public ResDto getOne(@PathVariable("postId") Integer postsId){
+    public ResDto getOne(@PathVariable("postId") String postsId){
 
         PostDto dto = postService.getOne(Integer.valueOf(postsId));
 
@@ -52,11 +51,14 @@ public class PostController {
     }
 
     @PutMapping("/posts/{postId}")
+    @Secured(value = "ROLE_USER")
     public ResDto update(@RequestBody PostUpdateRequestDto dto,
-                         @PathVariable("postId") Integer postId,
-                         @AuthenticationPrincipal User user){
+                         @PathVariable("postId") Integer postId){
 
-        postService.update(dto,user,postId);
-        return null;
+        postService.update(dto,postId);
+        return ResDto.builder()
+                .result(true)
+                .data(null)
+                .build();
     }
 }

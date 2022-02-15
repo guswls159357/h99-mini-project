@@ -4,9 +4,14 @@ import com.sparta.found.domain.repository.UserRepository;
 import com.sparta.found.error.ErrorCode;
 import com.sparta.found.error.exception.CustomException;
 import com.sparta.found.error.exception.CustomFieldException;
+import com.sparta.found.security.util.SecurityUtil;
 import com.sparta.found.web.dto.IdcheckRequestDto;
 import com.sparta.found.web.dto.SignupRequestDto;
+import com.sparta.found.web.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,5 +49,13 @@ public class UserService {
         if(userRepository.existsByUsername(username)){
             throw new CustomFieldException("username","이미 존재하는 이메일입니다",ErrorCode.DUPLICATED_INPUT_ERROR);
         }
+    }
+
+    public UserInfo getUserInfo(){
+
+        String username = SecurityUtil.getCurrentLoginUserId();
+
+
+        return userRepository.findByUsername(username).get().toUserInfo();
     }
 }
