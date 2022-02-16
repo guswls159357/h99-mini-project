@@ -1,5 +1,6 @@
 package com.sparta.found.web.controller;
 
+import com.sparta.found.domain.repository.TagRepository;
 import com.sparta.found.domain.repository.UserRepository;
 import com.sparta.found.domain.service.AuthService;
 import com.sparta.found.domain.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +28,7 @@ public class UserController {
     private final UserService userService;
     private final AuthService authService;
     private final UserRepository userRepository;
+    private final TagRepository tagRepository;
 
     @PostMapping("/user/signup")
     @ResponseStatus(HttpStatus.OK)
