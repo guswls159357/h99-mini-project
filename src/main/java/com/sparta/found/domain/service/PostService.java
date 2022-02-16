@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,7 +69,7 @@ public class PostService {
 
     public PostDto getOne(Integer postId) {
 
-        Post post = postRepository.findByIdFetchTag(postId).orElseThrow(() ->
+        Post post = postRepository.findByIdFetchPostTag(postId).orElseThrow(() ->
                 new CustomFieldException("postId", "존재하지 않는 게시물입니다", ErrorCode.NOT_EXIST_ERROR));
 
 
@@ -96,7 +97,7 @@ public class PostService {
     @Transactional
     public void update(PostUpdateRequestDto dto, Integer postId) {
 
-        Post post = postRepository.findByIdFetchTag(postId).orElseThrow(() ->
+        Post post = postRepository.findByIdFetchPostTag(postId).orElseThrow(() ->
                 new CustomFieldException("postId", "존재하지 않는 게시물입니다",ErrorCode.NOT_EXIST_ERROR));
 
         String currentLoginUserId = SecurityUtil.getCurrentLoginUserId();
@@ -142,6 +143,7 @@ public class PostService {
     public void delete(Integer postId){
 
         String currentLoginUserId = SecurityUtil.getCurrentLoginUserId();
+
 
         Post post = postRepository.findByIdFetchComment(postId).orElseThrow(
                 () -> new CustomFieldException("postId", "존재하지 않는 게시물입니다", ErrorCode.NOT_EXIST_ERROR));

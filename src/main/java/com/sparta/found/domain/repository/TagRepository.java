@@ -3,6 +3,7 @@ package com.sparta.found.domain.repository;
 
 import com.sparta.found.domain.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -21,4 +22,10 @@ public interface TagRepository extends JpaRepository<Tag, Integer> {
 
     @Query("select t from Tag t where t.contents in (:contents)")
     List<Tag> findAllByContentsList(@Param("contents") List<String> contents);
+
+    @Modifying
+    @Query("delete from Tag t where t.postTagList.size = 0")
+    void deleteAllByDeletedReference();
+
+
 }

@@ -83,11 +83,13 @@ public class CommentService {
 
     public CommentListResponseDto getAllByPostId(Integer postId) {
 
-        List<Comment> commentList = commentRepository.findAllByPostIdFetchAll();
+        List<Comment> commentList = commentRepository.findAllByPostIdFetchUser(postId);
+
+        System.out.println(commentList.size());
 
         List<CommentResponseDto> commentResponseDtos = commentList.stream().map(comment -> comment.toCommentResponseDto(
                         comment.getUser().toUserInfo(),
-                        comment.getCommentLikeList().stream().map(commentLike ->
+                        commentLikeRepository.findAllByCommentIdFetchUser(comment.getId()).stream().map(commentLike ->
                                 commentLike.getUser().toUserInfo()
                         ).collect(Collectors.toList())
                 )

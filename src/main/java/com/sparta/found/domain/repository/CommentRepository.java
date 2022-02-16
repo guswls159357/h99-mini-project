@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment,Integer> {
 
-    @Query("select distinct c from Comment c join fetch c.user join fetch c.commentLikeList cl join fetch cl.user order by c.createdAt desc")
-    List<Comment> findAllByPostIdFetchAll();
+    @Query("select distinct c from Comment c join fetch c.user where c.post.id = :postId order by c.createdAt desc")
+    List<Comment> findAllByPostIdFetchUser(Integer postId);
 }
