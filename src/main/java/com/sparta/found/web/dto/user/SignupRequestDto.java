@@ -1,4 +1,4 @@
-package com.sparta.found.web.dto;
+package com.sparta.found.web.dto.user;
 
 import com.sparta.found.domain.entity.User;
 import lombok.*;

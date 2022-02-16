@@ -61,4 +61,29 @@ public class PostController {
                 .data(null)
                 .build();
     }
+
+    @Secured("ROLE_USER")
+    @DeleteMapping("/posts/{postId}")
+    public ResDto delete(@PathVariable("postId") Integer postId){
+
+        postService.delete(postId);
+
+        return ResDto.builder()
+                .result(true)
+                .data(null)
+                .build();
+    }
+
+    @Secured("ROLE_USER")
+    @GetMapping("/posts/problem/{postId}")
+    public ResDto checkProblemStatus(@PathVariable("postId") Integer postId){
+
+        postService.changeProblemStatus(postId);
+
+        return ResDto.builder()
+                .result(true)
+                .data(null)
+                .build();
+    }
+
 }

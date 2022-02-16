@@ -1,4 +1,4 @@
-package com.sparta.found.web.dto;
+package com.sparta.found.web.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

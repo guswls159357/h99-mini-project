@@ -1,6 +1,6 @@
 package com.sparta.found.domain.entity;
 
-import com.sparta.found.web.dto.UserInfo;
+import com.sparta.found.web.dto.user.UserInfo;
 import com.sparta.found.web.dto.post.PostDto;
 import com.sparta.found.web.dto.post.PostResponseDto;
 import com.sparta.found.web.dto.post.PostUpdateRequestDto;
@@ -87,6 +87,11 @@ public class Post extends TimeEntity {
         this.contents = dto.getPostContents();
         this.language = dto.getPostLanguage();
         this.problem = dto.getPostProblem();
+    }
+
+    public void changeProblemStatus(){
+        if(this.problem) this.problem = false;
+        else this.problem = true;
     }
 
 }

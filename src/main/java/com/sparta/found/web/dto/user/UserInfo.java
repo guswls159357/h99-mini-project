@@ -1,13 +1,16 @@
-package com.sparta.found.web.dto;
+package com.sparta.found.web.dto.user;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class IdcheckRequestDto {
+@Builder
+public class UserInfo {
+
+    private Integer userId;
     private String username;
 }

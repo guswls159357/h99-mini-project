@@ -3,7 +3,7 @@ package com.sparta.found.domain.service;
 import com.sparta.found.domain.entity.User;
 import com.sparta.found.domain.repository.UserRepository;
 import com.sparta.found.security.jwt.TokenProvider;
-import com.sparta.found.web.dto.LoginRequestDto;
+import com.sparta.found.web.dto.user.LoginRequestDto;
 import com.sparta.found.web.dto.auth.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +27,7 @@ public class AuthService {
 
     @Transactional
     public TokenDto login(LoginRequestDto dto){
+
         // login ID/Password를 기반으로 Authentication 생성
         UsernamePasswordAuthenticationToken authenticationToken = dto.toAuthentication();
 
@@ -40,9 +41,7 @@ public class AuthService {
 
         User user = userRepository.findByUsername(dto.getUsername()).get();
 
-
         return tokenDto;
-
     }
 
 

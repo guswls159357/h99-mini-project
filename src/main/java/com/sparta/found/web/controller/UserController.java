@@ -5,6 +5,10 @@ import com.sparta.found.domain.service.AuthService;
 import com.sparta.found.domain.service.UserService;
 import com.sparta.found.web.dto.*;
 import com.sparta.found.web.dto.auth.TokenDto;
+import com.sparta.found.web.dto.user.IdCheckRequestDto;
+import com.sparta.found.web.dto.user.LoginRequestDto;
+import com.sparta.found.web.dto.user.SignupRequestDto;
+import com.sparta.found.web.dto.user.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -53,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping("/user/idCheck")
-    public ResDto idCheck(@Valid @RequestBody IdcheckRequestDto dto){
+    public ResDto idCheck(@Valid @RequestBody IdCheckRequestDto dto){
 
         userService.idDuplicateCheck(dto.getUsername());
 

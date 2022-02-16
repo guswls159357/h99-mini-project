@@ -2,16 +2,11 @@ package com.sparta.found.domain.service;
 
 import com.sparta.found.domain.repository.UserRepository;
 import com.sparta.found.error.ErrorCode;
-import com.sparta.found.error.exception.CustomException;
 import com.sparta.found.error.exception.CustomFieldException;
 import com.sparta.found.security.util.SecurityUtil;
-import com.sparta.found.web.dto.IdcheckRequestDto;
-import com.sparta.found.web.dto.SignupRequestDto;
-import com.sparta.found.web.dto.UserInfo;
+import com.sparta.found.web.dto.user.SignupRequestDto;
+import com.sparta.found.web.dto.user.UserInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,6 @@
 package com.sparta.found.web.dto.post;
 
-import com.sparta.found.web.dto.UserInfo;
+import com.sparta.found.web.dto.user.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

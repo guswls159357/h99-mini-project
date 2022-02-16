@@ -1,5 +1,7 @@
 package com.sparta.found.domain.entity;
 
+import com.sparta.found.web.dto.comment.CommentResponseDto;
+import com.sparta.found.web.dto.user.UserInfo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,15 +13,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "comment", indexes = {@Index(name = "idx_comment_created_at", columnList = "created_at"),
-                                 @Index(name = "idx_comment_updated_at", columnList = "updated_at")})
-public class Comment extends TimeEntity{
+        @Index(name = "idx_comment_updated_at", columnList = "updated_at")})
+public class Comment extends TimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="comment_contents", nullable = false, columnDefinition = "varchar(2000)")
-    private String  contents;
+    @Column(name = "comment_contents", nullable = false, columnDefinition = "varchar(5000)")
+    private String contents;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
@@ -32,12 +34,12 @@ public class Comment extends TimeEntity{
     @OneToMany(mappedBy = "comment", orphanRemoval = true)
     private List<CommentLike> commentLikeList = new ArrayList<>();
 
-    private void setUser(User user){
+    private void setUser(User user) {
         this.user = user;
         user.getCommentList().add(this);
     }
 
-    private void setPost(Post post){
+    private void setPost(Post post) {
         this.post = post;
         post.getCommentList().add(this);
     }
@@ -48,4 +50,15 @@ public class Comment extends TimeEntity{
         setUser(user);
         setPost(post);
     }
+
+    public CommentResponseDto toCommentResponseDto(UserInfo writeUserInfo, List<UserInfo> likeUserInfoList) {
+
+        return CommentResponseDto.builder()
+                .commentId(this.id)
+                .commentContent(this.contents)
+                .userInfo(writeUserInfo)
+                .commentLikes(likeUserInfoList)
+                .build();
+    }
+
 }

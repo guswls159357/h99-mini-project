@@ -1,15 +1,16 @@
-package com.sparta.found.web.dto.tag;
+package com.sparta.found.web.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class TagContent {
+public class UserInfoDto {
 
-    private String tagContents;
+    private UserInfo userInfo;
+
 }

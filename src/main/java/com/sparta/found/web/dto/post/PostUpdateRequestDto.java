@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @AllArgsConstructor
@@ -15,9 +17,13 @@ import java.util.List;
 @Builder
 public class PostUpdateRequestDto {
 
+    @NotBlank(message = "제목을 입력해 주세요")
     private String postTitle;
+    @NotBlank(message = "내용을 입력해 주세요")
     private String postContents;
+    @NotBlank(message = "언어을 입력해 주세요")
     private String postLanguage;
+    @Valid
     private List<String> postTag;
     private Boolean postProblem;
 

@@ -1,6 +1,6 @@
 package com.sparta.found.domain.entity;
 
-import com.sparta.found.web.dto.UserInfo;
+import com.sparta.found.web.dto.user.UserInfo;
 import lombok.*;
 
 import javax.persistence.*;
