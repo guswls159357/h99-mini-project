@@ -20,4 +20,5 @@ public interface CommentLikeRepository extends JpaRepository<CommentLike, Intege
     @Modifying
     @Query("delete from CommentLike cl where cl.comment.id = :commentId")
     void deleteAllByCommentId(@Param("commentId") Integer commentId);
+
 }

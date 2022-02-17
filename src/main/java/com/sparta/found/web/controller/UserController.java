@@ -4,8 +4,10 @@ import com.sparta.found.domain.repository.TagRepository;
 import com.sparta.found.domain.repository.UserRepository;
 import com.sparta.found.domain.service.AuthService;
 import com.sparta.found.domain.service.UserService;
+import com.sparta.found.file.S3Uploader;
 import com.sparta.found.web.dto.*;
 import com.sparta.found.web.dto.auth.TokenDto;
+import com.sparta.found.web.dto.image.ImageResponseDto;
 import com.sparta.found.web.dto.user.IdCheckRequestDto;
 import com.sparta.found.web.dto.user.LoginRequestDto;
 import com.sparta.found.web.dto.user.SignupRequestDto;
@@ -18,8 +20,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -28,7 +32,6 @@ public class UserController {
     private final UserService userService;
     private final AuthService authService;
     private final UserRepository userRepository;
-    private final TagRepository tagRepository;
 
     @PostMapping("/user/signup")
     @ResponseStatus(HttpStatus.OK)
@@ -81,5 +84,20 @@ public class UserController {
                     .build();
 
     }
+
+    @PostMapping("/user/images")
+    @Secured("ROLE_USER")
+    public ResDto uploadProfileImage(@RequestParam("images") MultipartFile multipartFile) throws IOException {
+
+        ImageResponseDto imageResponseDto = ImageResponseDto.builder()
+                .profileImageUrl(userService.updateProfileImage(multipartFile))
+                .build();
+
+        return ResDto.builder()
+                .result(true)
+                .data(imageResponseDto)
+                .build();
+    }
+
 
 }

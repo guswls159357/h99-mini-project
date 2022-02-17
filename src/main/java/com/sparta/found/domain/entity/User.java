@@ -45,8 +45,11 @@ public class User extends TimeEntity implements Serializable {
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Post> postList = new ArrayList<>();
 
-    @Column(name="user_role")
+    @Column(name="user_role", columnDefinition = "varchar(10)")
     private String role = "ROLE_USER";
+
+    @Column(name="user_profile_image_url")
+    private String profileImageUrl = "https://mini-project.s3.ap-northeast-2.amazonaws.com/static/fc11d9b3-7a4d-469e-8671-a037cb3979acIMG_5663.jpeg";
 
 
     @Builder
@@ -60,6 +63,12 @@ public class User extends TimeEntity implements Serializable {
         return UserInfo.builder()
                 .userId(this.id)
                 .username(this.username)
+                .profileImageUrl(this.profileImageUrl)
                 .build();
+    }
+
+    public void changeProfileImageUrl(String profileImageUrl){
+
+        this.profileImageUrl = profileImageUrl;
     }
 }

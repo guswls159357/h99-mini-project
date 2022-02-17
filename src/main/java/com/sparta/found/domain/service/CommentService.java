@@ -12,10 +12,7 @@ import com.sparta.found.error.ErrorCode;
 import com.sparta.found.error.exception.CustomAuthorizationException;
 import com.sparta.found.error.exception.CustomFieldException;
 import com.sparta.found.security.util.SecurityUtil;
-import com.sparta.found.web.dto.comment.CommentCreateRequestDto;
-import com.sparta.found.web.dto.comment.CommentIdDto;
-import com.sparta.found.web.dto.comment.CommentListResponseDto;
-import com.sparta.found.web.dto.comment.CommentResponseDto;
+import com.sparta.found.web.dto.comment.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +54,7 @@ public class CommentService {
     }
 
     @Transactional
-    public void commentLike(Integer commentId){
+    public CommentLikeResponseDto commentLike(Integer commentId){
 
         String currentLoginUserId = SecurityUtil.getCurrentLoginUserId();
         User user = userRepository.findByUsername(currentLoginUserId).get();
@@ -69,6 +66,7 @@ public class CommentService {
             CommentLike commentLike = optionalCommentLike.get();
             user.getCommentLikeList().remove(commentLike);
             commentLikeRepository.delete(commentLike);
+            return CommentLikeResponseDto.builder().state(false).build();
         }else{
             //추가
             CommentLike commentLike = CommentLike.builder()
@@ -77,6 +75,7 @@ public class CommentService {
                     .build();
 
             commentLikeRepository.save(commentLike);
+            return CommentLikeResponseDto.builder().state(true).build();
         }
 
     }
@@ -85,12 +84,10 @@ public class CommentService {
 
         List<Comment> commentList = commentRepository.findAllByPostIdFetchUser(postId);
 
-        System.out.println(commentList.size());
-
         List<CommentResponseDto> commentResponseDtos = commentList.stream().map(comment -> comment.toCommentResponseDto(
                         comment.getUser().toUserInfo(),
                         commentLikeRepository.findAllByCommentIdFetchUser(comment.getId()).stream().map(commentLike ->
-                                commentLike.getUser().toUserInfo()
+                                commentLike.getUser().getUsername()
                         ).collect(Collectors.toList())
                 )
         ).collect(Collectors.toList());

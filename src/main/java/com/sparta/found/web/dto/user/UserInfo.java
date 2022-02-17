@@ -13,4 +13,5 @@ public class UserInfo {
 
     private Integer userId;
     private String username;
+    private String profileImageUrl;
 }

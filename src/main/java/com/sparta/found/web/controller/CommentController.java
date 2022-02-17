@@ -4,6 +4,7 @@ import com.sparta.found.domain.service.CommentService;
 import com.sparta.found.web.dto.ResDto;
 import com.sparta.found.web.dto.comment.CommentCreateRequestDto;
 import com.sparta.found.web.dto.comment.CommentIdDto;
+import com.sparta.found.web.dto.comment.CommentLikeResponseDto;
 import com.sparta.found.web.dto.comment.CommentListResponseDto;
 import com.sparta.found.web.dto.post.PostCreateRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -57,11 +58,11 @@ public class CommentController {
     @GetMapping("/like/{commentId}")
     public ResDto commentLike(@PathVariable("commentId") Integer commentId){
 
-        commentService.commentLike(commentId);
+        CommentLikeResponseDto commentLikeResponseDto = commentService.commentLike(commentId);
 
         return ResDto.builder()
                 .result(true)
-                .data(null)
+                .data(commentLikeResponseDto)
                 .build();
     }
 }

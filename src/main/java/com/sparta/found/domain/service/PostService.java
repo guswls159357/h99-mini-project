@@ -94,6 +94,30 @@ public class PostService {
         return PostListResponseDto.builder().postList(postDtos).build();
     }
 
+
+    public PostListResponseDto getAllByUserId(Integer userId) {
+
+        String currentLoginUserId = SecurityUtil.getCurrentLoginUserId();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomFieldException("userId", "내 정보가 존재하지 않습니다", ErrorCode.NOT_EXIST_ERROR));
+
+        if(!user.getUsername().equals(currentLoginUserId)){
+            throw new CustomAuthorizationException("내가 작성한 글만 불러올 수 있습니다");
+        }
+
+        List<PostDto> postDtos = postRepository.findByUserIdFetchUser(userId).stream().map(post ->
+                        post.toPostDto(post.getUser().toUserInfo(),
+                                postTagRepository.findByPostId(post.getId()).stream().map(postTag ->
+                                                postTag.getTag().getContents())
+                                        .collect(Collectors.toList())))
+                .collect(Collectors.toList());
+
+
+        return PostListResponseDto.builder().postList(postDtos).build();
+    }
+
+
     @Transactional
     public void update(PostUpdateRequestDto dto, Integer postId) {
 
@@ -167,14 +191,22 @@ public class PostService {
     }
 
 
+    @Transactional
     public void changeProblemStatus(Integer postId) {
 
         String currentLoginUserId = SecurityUtil.getCurrentLoginUserId();
 
+
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomFieldException("postId", "존재하지 않는 게시물입니다", ErrorCode.NOT_EXIST_ERROR));
 
+        if(currentLoginUserId!=post.getUser().getUsername()){
+            new CustomAuthorizationException("내가 작성한 게시글만 가능합니다");
+        }
+
         post.changeProblemStatus();
+
+        postRepository.save(post);
     }
 
 

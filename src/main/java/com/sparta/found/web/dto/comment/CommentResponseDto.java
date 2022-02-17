@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Builder
@@ -20,6 +17,6 @@ public class CommentResponseDto {
     private UserInfo userInfo;
     private Integer commentId;
     private String commentContent;
-    private List<UserInfo> commentLikes;
-
+    private List<String> commentLikesUsername;
+    private Integer commentLike;
 }

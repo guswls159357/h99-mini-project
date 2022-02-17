@@ -50,6 +50,18 @@ public class PostController {
                 .build();
     }
 
+    @GetMapping("/posts/user/{userId}")
+    @Secured("ROLE_USER")
+    public ResDto getAllByUserId(@PathVariable("userId") Integer userId){
+
+        PostListResponseDto postListResponseDto = postService.getAllByUserId(userId);
+
+        return ResDto.builder()
+                .result(true)
+                .data(postListResponseDto)
+                .build();
+    }
+
     @PutMapping("/posts/{postId}")
     @Secured(value = "ROLE_USER")
     public ResDto update(@RequestBody PostUpdateRequestDto dto,

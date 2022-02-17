@@ -51,13 +51,14 @@ public class Comment extends TimeEntity {
         setPost(post);
     }
 
-    public CommentResponseDto toCommentResponseDto(UserInfo writeUserInfo, List<UserInfo> likeUserInfoList) {
+    public CommentResponseDto toCommentResponseDto(UserInfo writeUserInfo, List<String> likeUsernameList) {
 
         return CommentResponseDto.builder()
                 .commentId(this.id)
                 .commentContent(this.contents)
                 .userInfo(writeUserInfo)
-                .commentLikes(likeUserInfoList)
+                .commentLikesUsername(likeUsernameList)
+                .commentLike(likeUsernameList.size())
                 .build();
     }
 

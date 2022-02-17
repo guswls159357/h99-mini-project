@@ -16,6 +16,10 @@ public interface PostRepository extends JpaRepository<Post,Integer> {
     @Query("select distinct p from Post p join fetch p.user")
     List<Post> findAllFetchUser();
 
+    @Query("select distinct p from Post p join fetch p.user u where u.id = :userId")
+    List<Post> findByUserIdFetchUser(@Param("userId") Integer userId);
+
     @Query("select distinct p from Post p left outer join fetch p.commentList where p.id = :postId")
     Optional<Post> findByIdFetchComment(@Param("postId") Integer postId);
+
 }
